@@ -3,7 +3,7 @@
   height: 100vh;
   // On utilise une transition pour que ce soit fluide
   transition: grid-template-columns 0.3s ease;
-  grid-template-columns: 220px 1fr;
+  grid-template-columns: 240px 1fr;
   grid-template-rows: 55px 1fr;
   grid-template-areas: 
     "navbar header"

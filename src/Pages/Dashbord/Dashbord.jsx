@@ -93,24 +93,35 @@ const Dashbord = () => {
   }, []);
 
   return (
-    <div className='flex justify-center items-center flex-col space-y-8'>
-      <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4'>
+    <div className='flex justify-center items-center flex-col'>
+      <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 w-full'>
         {donne.map((items) => {
           const Icone = items.icone;
           return (
-            <div key={items.id}
-              className={`flex justify-start items-center gap-4 bg-white ${items.borderColor} py-4 px-4 rounded-lg
-        duration-300 border-l-[3px] hover:scale-[1.05] shadow-sm`}>
+            <div
+              key={items.id}
+              className={`flex justify-start items-center gap-3 bg-white ${items.borderColor} 
+          p-4 rounded-xl duration-300 border-l-[4px] shadow-sm hover:shadow-md 
+          hover:-translate-y-0.5 group cursor-pointer`}
+            >
+              {/* Icône rétrécie : de p-4/size-40 à p-2.5/size-24 */}
+              <div className={`${items.bgcolor} rounded-lg p-2.5 shrink-0 transition-colors`}>
+                <Icone size={24} className={`${items.textColor}`} />
+              </div>
 
-              <span className={`${items.bgcolor} rounded p-3 shrink-0`}>
-                <Icone size={40} className={`${items.textColor}`} />
-              </span>
-
-              <span className="min-w-0">
-                <h2 className='text-lg font-semibold truncate'>{items.titre}</h2>
-                <h1 className={`text-xl font-bold ${items.textColor}`}>{items.nombre}</h1>
-                <p className='text-[12px] text-gray-500 line-clamp-1'>{items.para}</p>
-              </span>
+              {/* Section Texte ajustée */}
+              <div className="flex flex-col min-w-0">
+                <span className='text-[10px] font-bold uppercase tracking-wider text-slate-400'>
+                  {items.titre}
+                </span>
+                {/* Nombre réduit : de text-3xl à text-lg/xl */}
+                <h1 className={`text-xl font-extrabold leading-tight ${items.textColor}`}>
+                  {items.nombre}
+                </h1>
+                <p className='text-[10px] text-slate-500 truncate opacity-80'>
+                  {items.para}
+                </p>
+              </div>
             </div>
           );
         })}

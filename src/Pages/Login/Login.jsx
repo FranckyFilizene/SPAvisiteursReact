@@ -36,15 +36,15 @@ const Login = () => {
       setError('');
 
       const response = await axios.post('http://localhost/Delegg-Hub/sapvisiteur/src/Backend/login.php', {
-        name : username,
-        password : password
+        name: username,
+        password: password
       });
 
       if (response?.data?.status === "success") {
         localStorage.setItem('auth', 'true');
         localStorage.setItem('username', username);
         localStorage.setItem('emailuser', response.data.email);
-        
+
         navigate('/dashbord');
       } else {
         setError(response?.data?.message || 'Identifiants incorrects');
@@ -59,24 +59,34 @@ const Login = () => {
   };
 
   return (
-    <div className='bg-slate-200 h-screen w-screen flex justify-center items-center'>
-      <div className='flex flex-col bg-slate-950 px-4 py-6 rounded-lg w-96 space-y-6 shadow-2xl border-[1px]'>
-        <h1 className=' gap-2 text-3xl font-bold text-center text-white h-20 flex justify-center items-center rounded-lg'>
-          <BiWorld size={40}/>SPA Visiteur
-        </h1>
+    <div className='min-h-screen w-full flex justify-center items-center bg-slate-950 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-slate-900 via-slate-950 to-black p-1'>
 
-        <form onSubmit={handleLogin} className='space-y-4'>
+      {/* Card Container */}
+      <div className='flex flex-col bg-slate-900/50 backdrop-blur-xl px-8 py-10 rounded-2xl w-full max-w-md space-y-8 shadow-2xl border border-slate-800 ring-1 ring-white/5'>
+
+        {/* Header / Logo */}
+        <div className='text-center space-y-2'>
+          <div className='flex justify-center items-center gap-3 text-orange-500'>
+            <BiWorld size={48} className='drop-shadow-[0_0_8px_rgba(249,115,22,0.4)]' />
+          </div>
+          <h1 className='text-3xl font-black tracking-tight text-white'>
+            SPA <span className='text-orange-500'>Visiteur</span>
+          </h1>
+          <p className='text-slate-400 text-sm font-medium'>Accédez à votre tableau de bord</p>
+        </div>
+
+        <form onSubmit={handleLogin} className='space-y-6'>
 
           {/* Username */}
-          <div className='shadow-lg'>
-            <label className='text-slate-300'>Nom d'utilisateur :</label>
-            <div className='flex items-center gap-3 p-2 rounded-lg bg-white'>
-              <CgProfile className='text-orange-400' size={22} />
+          <div className='space-y-2'>
+            <label className='text-sm font-semibold text-slate-300 ml-1'>Nom d'utilisateur</label>
+            <div className='group flex items-center gap-3 p-3 rounded-xl bg-slate-950/50 border border-slate-700 focus-within:border-orange-500/50 focus-within:ring-2 focus-within:ring-orange-500/20 transition-all duration-300'>
+              <CgProfile className='text-slate-500 group-focus-within:text-orange-400 transition-colors' size={22} />
               <input
                 type="text"
-                placeholder="Username"
+                placeholder="Ex: Jean Dupont"
                 value={username}
-                className='w-full focus:outline-none'
+                className='w-full bg-transparent text-white placeholder:text-slate-600 focus:outline-none'
                 onChange={(e) => {
                   setUsername(e.target.value);
                   setError('');
@@ -86,15 +96,15 @@ const Login = () => {
           </div>
 
           {/* Password */}
-          <div className='shadow-lg'>
-            <label className='text-slate-300'>Mot de passe :</label>
-            <div className='flex items-center gap-3 p-2 rounded-lg bg-white'>
-              <PiPassword className='text-orange-400' size={22} />
+          <div className='space-y-2'>
+            <label className='text-sm font-semibold text-slate-300 ml-1'>Mot de passe</label>
+            <div className='group flex items-center gap-3 p-3 rounded-xl bg-slate-950/50 border border-slate-700 focus-within:border-orange-500/50 focus-within:ring-2 focus-within:ring-orange-500/20 transition-all duration-300'>
+              <PiPassword className='text-slate-500 group-focus-within:text-orange-400 transition-colors' size={22} />
               <input
                 type={showPassword ? 'text' : 'password'}
-                placeholder="Password"
+                placeholder="••••••••"
                 value={password}
-                className='w-full focus:outline-none'
+                className='w-full bg-transparent text-white placeholder:text-slate-600 focus:outline-none'
                 onChange={(e) => {
                   setPassword(e.target.value);
                   setError('');
@@ -103,42 +113,55 @@ const Login = () => {
             </div>
           </div>
 
-          {/* Show password */}
-          <div className='flex justify-between items-center gap-2 text-sm'>
-            <div>
-              <input
-              className='shadow-lg'
-              type="checkbox"
-              checked={showPassword}
-              onChange={() => setShowPassword(!showPassword)}
-            />
-            <span className='text-gray-500'>Afficher le mot de passe</span>
-            </div>
-            <div>
-                <Link to="/forgetpassword"  className='text-red-700 underline text-[12px]'>mot de pass oublié ?</Link>
-            </div>
+          {/* Options secondaires */}
+          <div className='flex justify-between items-center text-xs'>
+            <label className='flex items-center gap-2 cursor-pointer group'>
+              <div className='relative flex items-center'>
+                <input
+                  type="checkbox"
+                  checked={showPassword}
+                  onChange={() => setShowPassword(!showPassword)}
+                  className='peer appearance-none w-4 h-4 border border-slate-700 rounded bg-slate-800 checked:bg-orange-600 checked:border-orange-600 transition-all'
+                />
+                <v-icon name="fa-check" className='absolute w-3 h-3 text-white scale-0 peer-checked:scale-100 left-0.5 transition-transform' />
+              </div>
+              <span className='text-slate-400 group-hover:text-slate-300 transition-colors'>Afficher le mot de passe</span>
+            </label>
+            <Link to="/forgetpassword" className='text-orange-500/80 hover:text-orange-500 hover:underline font-medium'>
+              Mot de passe oublié ?
+            </Link>
           </div>
 
-          {/* Error */}
-          {error && (
-            <p className='text-red-500 text-[10px] text-center'>
-              {error}
-            </p>
-          )}
+          {/* Error Message */}
+          <div className='min-h-[20px]'>
+            {error && (
+              <p className='text-red-400 text-xs text-center bg-red-400/10 py-2 rounded-lg border border-red-400/20 animate-pulse'>
+                {error}
+              </p>
+            )}
+          </div>
 
           {/* Actions */}
-          <div className='flex justify-between items-center'>
+          <div className='space-y-4 pt-2'>
             <button
               type="submit"
               disabled={loading}
-              className='mt-4 bg-orange-600 px-5 py-2 text-white font-bold rounded hover:bg-orange-400 disabled:opacity-50 shadow-sm duration-300'
+              className='w-full bg-orange-600 hover:bg-orange-500 text-white font-bold py-3 rounded-xl shadow-lg shadow-orange-900/20 active:scale-[0.98] disabled:opacity-50 disabled:active:scale-100 transition-all duration-200 uppercase tracking-wider text-sm'
             >
-              {loading ? "Connexion..." : "Login"}
+              {loading ? (
+                <span className='flex justify-center items-center gap-2'>
+                  <svg className="animate-spin h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle><path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
+                  Connexion en cours...
+                </span>
+              ) : "Se connecter"}
             </button>
 
-            <Link to='/inscrire' className='text-cyan-600 hover:underline font-bold'>
-              S'inscrire
-            </Link>
+            <div className='text-center'>
+              <span className='text-slate-500 text-sm'>Nouveau ici ? </span>
+              <Link to='/inscrire' className='text-white hover:text-orange-500 font-bold transition-colors text-sm'>
+                Créer un compte
+              </Link>
+            </div>
           </div>
 
         </form>

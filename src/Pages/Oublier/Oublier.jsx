@@ -26,7 +26,7 @@ const Oublier = () => {
     try {
       setError('');
       setMessage('');
-      const res = await axios.post('http://localhost/Delegg-Hub/sapvisiteur/src/Backend/send_otp.php', { identifier: email });
+      const res = await axios.post('http://localhost/Delegg-Hub/SPAVisiteursReact/src/Backend/send_otp.php', { identifier: email });
       if (res.data.status === "success") {
         setMessage(res.data.message || 'Code envoyé avec succès.');
         setStep(2);
@@ -44,7 +44,7 @@ const Oublier = () => {
     try {
       setError('');
       setMessage('');
-      const res = await axios.post('http://localhost/Delegg-Hub/sapvisiteur/src/Backend/verify_otp.php', { identifier: email, otp: otp });
+      const res = await axios.post('http://localhost/Delegg-Hub/SPAVisiteursReact/src/Backend/verify_otp.php', { identifier: email, otp: otp });
       if (res.data.status === "success") {
         setMessage('Code vérifié. Vous pouvez changer votre mot de passe.');
         setStep(3);
@@ -64,7 +64,7 @@ const Oublier = () => {
       setMessage('');
 
       const res = await axios.post(
-        'http://localhost/Delegg-Hub/sapvisiteur/src/Backend/reset_otp.php',
+        'http://localhost/Delegg-Hub/SPAVisiteursReact/src/Backend/reset_otp.php',
         { identifier: email, password: newpassword }
       );
 

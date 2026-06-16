@@ -30,40 +30,53 @@ const Ajouter = () => {
     setErreur('');
   }
 
-  const handleClick = async(e) => {
-    e.preventDefault();
+  const handleClick = async (e) => {
+  e.preventDefault();
 
-    if(!formData.numero || !formData.nom || !formData.jours || !formData.tarifjournalier){
-      setErreur('Veuillez remplir tous les champs');
-      return;
-    }
+  if (!formData.numero || !formData.nom || !formData.jours || !formData.tarifjournalier) {
+    setErreur('Veuillez remplir tous les champs');
+    return;
+  }
 
-    try{
-      setLoading(true);
-      setErreur('');
-      setSuccess('');
+  try {
+    setLoading(true);
+    setErreur('');
+    setSuccess('');
 
-      const reponse = await axios.post('http://localhost/Delegg-Hub/sapvisiteur/src/Backend/ajouter.php', {
+    const response = await axios.post(
+      'http://localhost/Delegg-Hub/SPAVisiteursReact/src/Backend/ajouter.php',
+      {
         numero: formData.numero,
         nom: formData.nom,
         jours: formData.jours,
         tarifjournalier: formData.tarifjournalier
-      });
-      setSuccess('Visiteur enregistré avec succès');
-    }catch(err){
-      console.error(err);
-      setErreur('Erreur lors de l\'enregistrement, veuillez réessayer');
-    } finally{
-      setLoading(false);
+      }
+    );
+
+    const data = response.data;
+
+    if (data.status === "success") {
+      setSuccess(data.message);   // message PHP
+      setErreur('');
+    } else {
+      setErreur(data.message);    // message PHP erreur (ex: existe déjà)
+      setSuccess('');
     }
 
+  } catch (err) {
+    console.error(err);
+    setErreur("Erreur serveur, veuillez réessayer");
+    setSuccess('');
+  } finally {
+    setLoading(false);
   }
+};
   return (
     <div className='flex justify-center items-center h-full w-full p-4'>
       {/* Container principal */}
-      <div className='flex flex-col gap-8 h-fit w-full max-w-4xl bg-slate-200 rounded-xl shadow-2xl p-8'>
+      <div className='flex flex-col gap-8 h-fit w-full max-w-4xl bg-slate-200 rounded-xl shadow-2xl p-8 dark:bg-slate-800 dark:shadow-lg'>
         
-        <h1 className='text-2xl text-orange-700 font-bold border-b-2 border-gray-400 pb-2 w-full'>
+        <h1 className='text-2xl text-orange-700 font-bold border-b-2 dark:text-orange-600 border-gray-400 pb-2 w-full'>
           Ajouter un nouveau visiteur
         </h1>
 
@@ -72,8 +85,8 @@ const Ajouter = () => {
           {/* Ligne 1 : Numéro et Nom */}
           <div className='flex flex-col md:flex-row justify-between gap-6 w-full'>
             <div className='flex flex-col gap-2 w-full md:w-[48%]'>
-              <label htmlFor="Number" className="font-medium text-slate-700">Numéro du visiteur</label>
-              <div className='w-full bg-white h-12 rounded-lg flex items-center px-3 shadow-md gap-3 focus-within:ring-1 focus-within:ring-orange-400 transition-all'>
+              <label htmlFor="Number" className="font-medium text-slate-700 dark:text-slate-300">Numéro du visiteur</label>
+              <div className='w-full bg-white dark:bg-slate-900 h-12 rounded-lg flex items-center px-3 shadow-md gap-3 focus-within:ring-1 focus-within:ring-orange-400 transition-all'>
                 <FaPhoneAlt size={18} className='text-orange-300'/>
                 <input 
                   type="text" 
@@ -87,8 +100,8 @@ const Ajouter = () => {
               </div>
             </div>
             <div className='flex flex-col gap-2 w-full md:w-[48%]'>
-              <label htmlFor="Name" className="font-medium text-slate-700">Nom du visiteur</label>
-              <div className='w-full bg-white h-12 rounded-lg flex items-center px-3 shadow-md gap-3 focus-within:ring-1 focus-within:ring-orange-400 transition-all'>
+              <label htmlFor="Name" className="font-medium text-slate-700 dark:text-slate-300">Nom du visiteur</label>
+              <div className='w-full bg-white dark:bg-slate-900 h-12 rounded-lg flex items-center px-3 shadow-md gap-3 focus-within:ring-1 focus-within:ring-orange-400 transition-all'>
                 <FaPortrait size={20} className='text-orange-300'/>
                 <input 
                   type="text" 
@@ -106,8 +119,8 @@ const Ajouter = () => {
           {/* Ligne 2 : Jours et Tarif */}
           <div className='flex flex-col md:flex-row justify-between gap-6 w-full'>
             <div className='flex flex-col gap-2 w-full md:w-[48%]'>
-              <label htmlFor="jour" className="font-medium text-slate-700">Nombre de jours</label>
-              <div className='w-full bg-white h-12 rounded-lg flex items-center px-3 shadow-md gap-3 focus-within:ring-1 focus-within:ring-orange-400 transition-all'>
+              <label htmlFor="jour" className="font-medium text-slate-700 dark:text-slate-300">Nombre de jours</label>
+              <div className='w-full bg-white dark:bg-slate-900 h-12 rounded-lg flex items-center px-3 shadow-md gap-3 focus-within:ring-1 focus-within:ring-orange-400 transition-all'>
                 <MdCalendarToday size={20} className='text-orange-300'/>
                 <input 
                   type="number" 
@@ -122,8 +135,8 @@ const Ajouter = () => {
             </div>
 
             <div className='flex flex-col gap-2 w-full md:w-[48%]'>
-              <label htmlFor="tarif" className="font-medium text-slate-700">Tarif journalier (Ar)</label>
-              <div className='w-full bg-white h-12 rounded-lg flex items-center px-3 shadow-md gap-3 focus-within:ring-1 focus-within:ring-orange-400 transition-all'>
+              <label htmlFor="tarif" className="font-medium text-slate-700 dark:text-slate-300">Tarif journalier (Ar)</label>
+              <div className='w-full bg-white dark:bg-slate-900 h-12 rounded-lg flex items-center px-3 shadow-md gap-3 focus-within:ring-1 focus-within:ring-orange-400 transition-all'>
                 <MdAttachMoney size={20} className='text-orange-300'/>
                 <input 
                   type="number" 

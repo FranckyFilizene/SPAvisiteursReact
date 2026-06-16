@@ -4,6 +4,11 @@ import axios from 'axios';
 import { CgProfile } from "react-icons/cg";
 import { PiPassword } from 'react-icons/pi';
 import { BiWorld } from 'react-icons/bi';
+import {
+  FaEye,
+  FaEyeSlash,
+  FaUser
+} from "react-icons/fa";
 
 const Login = () => {
   const [username, setUsername] = useState('');
@@ -26,7 +31,7 @@ const Login = () => {
     e.preventDefault();
 
     // 🔹 Validation
-    if (!username || !password) {
+    if (username.trim() === '' || password.trim() === '') {
       setError('Veuillez remplir tous les champs');
       return;
     }
@@ -35,7 +40,7 @@ const Login = () => {
       setLoading(true);
       setError('');
 
-      const response = await axios.post('http://localhost/Delegg-Hub/sapvisiteur/src/Backend/login.php', {
+      const response = await axios.post('http://localhost/Delegg-Hub/SPAVisiteursReact/src/Backend/login.php', {
         name: username,
         password: password
       });
@@ -62,7 +67,7 @@ const Login = () => {
     <div className='min-h-screen w-full flex justify-center items-center bg-slate-950 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-slate-900 via-slate-950 to-black p-1'>
 
       {/* Card Container */}
-      <div className='flex flex-col bg-slate-900/50 backdrop-blur-xl px-8 py-10 rounded-2xl w-full max-w-md space-y-8 shadow-2xl border border-slate-800 ring-1 ring-white/5'>
+      <div className='flex flex-col bg-slate-900/50 backdrop-blur-xl px-10 py-3 rounded-2xl w-full max-w-md space-y-8 shadow-2xl border border-slate-800 ring-1 ring-white/5'>
 
         {/* Header / Logo */}
         <div className='text-center space-y-2'>
@@ -110,6 +115,14 @@ const Login = () => {
                   setError('');
                 }}
               />
+              <button
+              type='button'
+              onClick={()=>setShowPassword(!showPassword)}
+              >
+                {
+                  showPassword ? <FaEyeSlash className='text-slate-300'/> : <FaEye className='text-slate-300'/>
+                }
+              </button>
             </div>
           </div>
 
@@ -142,7 +155,7 @@ const Login = () => {
           </div>
 
           {/* Actions */}
-          <div className='space-y-4 pt-2'>
+          <div className=''>
             <button
               type="submit"
               disabled={loading}

@@ -22,7 +22,7 @@ const Liste = () => {
   const fetchVisiteurs = async () => {
     try {
       setLoading(true);
-      const reponse = await axios.get('http://localhost/Delegg-Hub/sapvisiteur/src/Backend/lister.php');
+      const reponse = await axios.get('http://localhost/Delegg-Hub/SPAVisiteursReact/src/Backend/lister.php');
       setVisiteurs(reponse.data);
       setFilteredVisiteurs(reponse.data);
     } catch (err) {
@@ -48,7 +48,7 @@ const Liste = () => {
   const handleDelete = async (id) => {
     if (!window.confirm("Voulez-vous vraiment supprimer ce visiteur ?")) return;
     try {
-      const res = await axios.get(`http://localhost/Delegg-Hub/sapvisiteur/src/Backend/Delete.php?id=${id}`);
+      const res = await axios.get(`http://localhost/Delegg-Hub/SPAVisiteursReact/src/Backend/Delete.php?id=${id}`);
       if (res.data.status === "success") {
         setSuccess('Visiteur supprimé avec succès');
         // Mise à jour locale pour éviter un fetch
@@ -68,9 +68,20 @@ const Liste = () => {
 
   const handleUpdate = async (e) => {
     e.preventDefault();
-    // Ici tu ajouteras ton appel axios.post vers Update.php
+    try{
+      const res = await axios.post('http://localhost/Delegg-Hub/SPAVisiteursReact/src/Backend/update.php', {
+        id: selectedVisiteur.id,
+        Nom: selectedVisiteur.Nom,
+        Numero: selectedVisiteur.Numero,
+        Jours: selectedVisiteur.Jours,
+        TarifJornalier: selectedVisiteur.TarifJornalier
+      });
+    }catch(err){
+      setErreur('Erreur lors de la mise à jour, veuillez réessayer');
+    }
+
     console.log("Données à envoyer :", selectedVisiteur);
-    setSuccess("Modification enregistrée (Simulation)");
+    setSuccess("Modification enregistrée");
     setShowModal(false);
     fetchVisiteurs(); // Recharger la liste
   };
@@ -85,8 +96,8 @@ const Liste = () => {
           <div className='flex items-center gap-5 w-full md:w-auto'>
             <input 
               type="text" 
-              className='h-10 rounded-lg flex-1 md:w-60 bg-slate-100 px-3 focus:ring-2 focus:ring-orange-500 outline-none' 
-              placeholder='Rechercher un nom...' 
+              className='h-10 rounded-lg flex-1 md:w-60 dark:text-black bg-slate-100 px-3 focus:ring-2 focus:ring-orange-500 outline-none' 
+              placeholder='🔍Rechercher' 
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
             />
@@ -108,7 +119,7 @@ const Liste = () => {
         <div className='overflow-x-auto'>
           <table className='w-full text-left border-collapse'>
             <thead>
-              <tr className='bg-slate-300 text-orange-700 uppercase text-sm'>
+              <tr className='bg-slate-300 dark:bg-slate-700 text-orange-600 uppercase text-sm'>
                 <th className='py-3 px-6 border-b border-gray-400'>Nom</th>
                 <th className='py-3 px-6 border-b border-gray-400'>Numéro</th>
                 <th className='py-3 px-6 border-b border-gray-400 text-center'>Jours</th>
@@ -117,27 +128,27 @@ const Liste = () => {
                 <th className='py-3 px-6 border-b border-gray-400'>Action</th>
               </tr>
             </thead>
-            <tbody className='text-slate-700 text-sm font-light'>
+            <tbody className='text-slate-700 dark:bg-gray-900 text-sm font-light'>
               {filteredVisiteurs.map((v) => (
-                <tr key={v.id} className='border-b border-gray-300 hover:bg-slate-100 transition-colors'>
+                <tr key={v.id} className='border-b border-gray-300 dark:text-slate-400 hover:bg-slate-100 transition-colors'>
                   <td className='py-3 px-6 flex items-center gap-2'>
-                    <FaUser className='text-blue-900' /> {v.Nom}
+                    <FaUser className='text-blue-900 dark:text-blue-400' /> {v.Nom}
                   </td>
                   <td className='py-3 px-6'><FaPhone className='inline mr-2 text-gray-500' /> {v.Numero}</td>
                   <td className='py-3 px-6 text-center font-medium'>{v.Jours}</td>
                   <td className='py-3 px-6 whitespace-nowrap'>{parseFloat(v.TarifJornalier).toLocaleString()} Ar</td>
-                  <td className='py-3 px-6 font-bold text-blue-900 whitespace-nowrap'>{parseFloat(v.Total).toLocaleString()} Ar</td>
+                  <td className='py-3 px-6 font-bold text-blue-900 dark:text-blue-400 whitespace-nowrap'>{parseFloat(v.Total).toLocaleString()} Ar</td>
                   <td className='py-3 px-6'>
                     <div className='flex items-center gap-6'>
                         <BiTrash
                             size={20}
                             onClick={() => handleDelete(v.id)}
-                            className='text-red-600 cursor-pointer hover:scale-125 duration-300' 
+                            className='text-red-600 cursor-pointer hover:scale-125 duration-300 dark:text-red-400' 
                         />
                         <BiEdit 
                             size={20} 
                             onClick={() => handleEditClick(v)}
-                            className='text-green-700 cursor-pointer hover:scale-125 duration-300' 
+                            className='text-green-700 cursor-pointer hover:scale-125 duration-300 dark:text-green-400' 
                         />
                     </div>
                   </td>
@@ -155,7 +166,7 @@ const Liste = () => {
 
       {/* MODAL DE MODIFICATION */}
       {showModal && (
-        <div className='fixed inset-0 bg-black/70 backdrop-blur-sm flex justify-center items-center z-[100] p-4'>
+        <div className='fixed inset-0 bg-black/70 backdrop-blur-sm duration-1000 flex justify-center items-center z-[100] p-4'>
           <form 
             onSubmit={handleUpdate}
             className='flex flex-col space-y-5 bg-slate-900 p-8 w-full max-w-md rounded-2xl shadow-2xl border border-slate-700'
@@ -169,7 +180,7 @@ const Liste = () => {
                         <FaUser className='text-orange-500' />
                         <input 
                             type="text" 
-                            className='outline-none text-black w-full'
+                            className='outline-none text-black w-full bg-white'
                             value={selectedVisiteur.Nom}
                             onChange={(e) => setSelectedVisiteur({...selectedVisiteur, Nom: e.target.value})}
                         />
@@ -182,7 +193,7 @@ const Liste = () => {
                         <FaPhone className='text-orange-500' />
                         <input 
                             type="text" 
-                            className='outline-none text-black w-full'
+                            className='outline-none text-black w-full bg-white'
                             value={selectedVisiteur.Numero}
                             onChange={(e) => setSelectedVisiteur({...selectedVisiteur, Numero: e.target.value})}
                         />
@@ -196,7 +207,7 @@ const Liste = () => {
                             <MdCalendarToday className='text-orange-500' />
                             <input 
                                 type="number" 
-                                className='outline-none text-black w-full'
+                                className='outline-none text-black w-full bg-white'
                                 value={selectedVisiteur.Jours}
                                 onChange={(e) => setSelectedVisiteur({...selectedVisiteur, Jours: e.target.value})}
                             />
@@ -208,7 +219,7 @@ const Liste = () => {
                             <BiDollar className='text-orange-500'/>
                             <input 
                                 type="number" 
-                                className='outline-none text-black w-full'
+                                className='outline-none text-black w-full bg-white'
                                 value={selectedVisiteur.TarifJornalier}
                                 onChange={(e) => setSelectedVisiteur({...selectedVisiteur, TarifJornalier: e.target.value})}
                             />

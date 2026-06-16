@@ -29,7 +29,7 @@ const Inscrire = () => {
       setLoading(true);
       setErreur(''); // On réinitialise l'erreur avant de lancer l'appel
 
-      const reponse = await axios.post('http://localhost/Delegg-Hub/sapvisiteur/src/Backend/Inscription.php', {
+      const reponse = await axios.post('http://localhost/Delegg-Hub/SPAVisiteursReact/src/Backend/Inscription.php', {
         name: name,
         password: password,
         email: email

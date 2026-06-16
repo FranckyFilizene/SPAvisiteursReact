@@ -37,7 +37,7 @@ const Dashbord = () => {
   useEffect(() => {
     const fetchStats = async () => {
       try {
-        const res = await axios.get('http://localhost/Delegg-Hub/sapvisiteur/src/Backend/Dashboard.php');
+        const res = await axios.get('http://localhost/Delegg-Hub/SPAVisiteursReact/src/Backend/Dashboard.php');
         if (res.data.error) {
           throw new Error(res.data.error);
         }
@@ -60,7 +60,7 @@ const Dashbord = () => {
   useEffect(() => {
     const loadData = async () => {
       try {
-        const res = await axios.get('http://localhost/Delegg-Hub/sapvisiteur/src/Backend/GET_Chart_graphe.php');
+        const res = await axios.get('http://localhost/Delegg-Hub/SPAVisiteursReact/src/Backend/GET_Chart_graphe.php');
         if (res.data.length === 1) {
           const testData = [
             { name: "Début", trafic: 0, nbrdujour: 0 },
@@ -83,7 +83,7 @@ const Dashbord = () => {
   useEffect(() => {
     const loadData2 = async () => {
       try {
-        const response = await axios.get('http://localhost/Delegg-Hub/sapvisiteur/src/Backend/GET_Chart_pie.php');
+        const response = await axios.get('http://localhost/Delegg-Hub/SPAVisiteursReact/src/Backend/GET_Chart_pie.php');
         setpieData(response.data);
       } catch (err) {
         console.log(err);
@@ -100,7 +100,7 @@ const Dashbord = () => {
           return (
             <div
               key={items.id}
-              className={`flex justify-start items-center gap-3 bg-white ${items.borderColor} 
+              className={`flex justify-start items-center gap-3 bg-white dark:bg-slate-800 ${items.borderColor} 
           p-4 rounded-xl duration-300 border-l-[4px] shadow-sm hover:shadow-md 
           hover:-translate-y-0.5 group cursor-pointer`}
             >
@@ -111,14 +111,14 @@ const Dashbord = () => {
 
               {/* Section Texte ajustée */}
               <div className="flex flex-col min-w-0">
-                <span className='text-[10px] font-bold uppercase tracking-wider text-slate-400'>
+                <span className='text-[10px] font-bold uppercase tracking-wider text-slate-400 dark:text-slate-300'>
                   {items.titre}
                 </span>
                 {/* Nombre réduit : de text-3xl à text-lg/xl */}
                 <h1 className={`text-xl font-extrabold leading-tight ${items.textColor}`}>
                   {items.nombre}
                 </h1>
-                <p className='text-[10px] text-slate-500 truncate opacity-80'>
+                <p className='text-[10px] text-slate-500 dark:text-slate-400 truncate opacity-80'>
                   {items.para}
                 </p>
               </div>
@@ -126,17 +126,11 @@ const Dashbord = () => {
           );
         })}
       </div>
-      {/* 
-    1. Changement du parent : 
-       - flex-col par défaut (mobile)
-       - lg:flex-row (PC écran large)
-       - h-auto sur mobile pour laisser le contenu s'empiler, h-[24rem] seulement sur grand écran 
-*/}
       <div className='flex flex-col lg:flex-row justify-center items-center gap-6 h-auto lg:h-[28rem] w-full p-4'>
 
         {/* Graphique Courbe - Largeur 100% mobile, 40% PC */}
-        <div className='bg-slate-200 pb-6 rounded-lg w-full lg:w-[38%] flex flex-col justify-center items-center shadow-lg h-[400px] lg:h-full overflow-hidden'>
-          <h1 className='bg-slate-900 text-white p-2 text-center font-bold rounded-t-lg w-full text-sm md:text-base'>
+        <div className='bg-slate-200 dark:bg-slate-800 pb-6 rounded-lg w-full lg:w-[38%] flex flex-col justify-center items-center shadow-lg h-[400px] lg:h-full overflow-hidden'>
+          <h1 className='bg-slate-900 dark:bg-slate-700 text-white p-2 text-center font-bold rounded-t-lg w-full text-sm md:text-base'>
             Courbe des jours et tarifs
           </h1>
 
@@ -206,8 +200,8 @@ const Dashbord = () => {
         </div>
 
         {/* Graphique Camembert - Largeur 100% mobile, 35% PC */}
-        <div className='bg-slate-200 rounded-lg w-full lg:w-[35%] flex justify-center items-center shadow-lg flex-col pb-4 h-[400px] lg:h-full'>
-          <h1 className='bg-slate-900 text-white p-2 text-center font-bold rounded-t-lg w-full'>
+        <div className='bg-slate-200 dark:bg-slate-800 rounded-lg w-full lg:w-[35%] flex justify-center items-center shadow-lg flex-col pb-4 h-[400px] lg:h-full'>
+          <h1 className='bg-slate-900 dark:bg-slate-700 text-white p-2 text-center font-bold rounded-t-lg w-full'>
             Somme du jour et du tarif
           </h1>
           <ResponsiveContainer width="100%" height="100%">
@@ -232,34 +226,34 @@ const Dashbord = () => {
         </div>
 
         {/* Résumé du Bilan - Largeur 100% mobile, fixe (w-72) sur PC */}
-        <div className='flex flex-col justify-between py-8 px-6 bg-white w-full lg:w-80 rounded-lg h-full shadow-lg border border-slate-100'>
-          <h1 className='text-xl md:text-2xl font-semibold pb-3 border-b border-gray-200 w-full'>
+        <div className='flex flex-col justify-between py-8 px-6 bg-slate-200 dark:bg-slate-800 w-full lg:w-80 rounded-lg h-full shadow-lg border border-slate-100 dark:border-slate-700'>
+          <h1 className='text-xl md:text-2xl font-semibold pb-3 border-b border-gray-500 dark:border-gray-200 w-full dark:text-slate-100'>
             Résumé du bilan
           </h1>
 
           <div className='w-full space-y-4'>
             <div className='flex justify-between items-center'>
-              <p className='text-gray-600'>Total Général</p>
-              <p className='text-sm md:text-base text-green-600 font-bold'>
+              <p className='text-gray-600 dark:text-slate-300'>Total Général</p>
+              <p className='text-sm md:text-base text-green-600 font-light'>
                 {`${parseFloat(stats.total).toLocaleString()} Ar`}
               </p>
             </div>
             <div className='flex justify-between items-center'>
-              <p className='text-gray-600'>Minimum</p>
-              <p className='text-sm text-purple-600 font-semibold'>
+              <p className='text-gray-600 dark:text-slate-300'>Minimum</p>
+              <p className='text-sm text-purple-600 font-light'>
                 {`${stats.min.toLocaleString()} Ar`}
               </p>
             </div>
             <div className='flex justify-between items-center'>
-              <p className='text-gray-600'>Maximum</p>
-              <p className='text-sm text-orange-600 font-semibold'>
+              <p className='text-gray-600 dark:text-slate-300'>Maximum</p>
+              <p className='text-sm text-orange-600 font-light'>
                 {`${stats.max.toLocaleString()} Ar`}
               </p>
             </div>
 
-            <div className='pt-6 mt-6 border-t border-gray-100'>
+            <div className='pt-6 mt-6 border-t border-gray-500'>
               <div className='flex justify-between items-center'>
-                <p className='text-gray-500 text-sm'>Visiteurs totaux</p>
+                <p className='text-gray-800 dark:text-slate-400 text-sm'>Visiteurs totaux</p>
                 <p className='text-3xl text-blue-600 font-black'>{stats.nb}</p>
               </div>
             </div>
